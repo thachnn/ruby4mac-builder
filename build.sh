@@ -54,7 +54,7 @@ done
 "$_SC_DIR/_build_readline.sh" "$_PREFIX" "$_SCRATCH_DIR" "$_READLINE"
 
 [[ -z "$_GDBM" ]] && _EXTRA_ARGS="$_EXTRA_ARGS --without-gdbm" || \
-  "$_SC_DIR/_build_gdbm.sh" "$_PREFIX" "$_SCRATCH_DIR" "$_GDBM"
+  "$_SC_DIR/_build_gdbm.sh" "$_PREFIX" "$_SCRATCH_DIR" "$_GDBM" "$_NO_TESTS"
 
 
 "$_SC_DIR/_build_ruby.sh" "$_PREFIX" "$_SCRATCH_DIR" "$_VERSION" "$_EXTRA_ARGS" "$_NO_TESTS"
