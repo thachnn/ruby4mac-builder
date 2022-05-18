@@ -36,12 +36,12 @@ while [[ $# -gt 0 ]]; do
   --extra-opts=*)
     _EXTRA_ARGS="$_EXTRA_ARGS ${1#*=}"
     ;;
-  --no-tests)
-    _NO_TESTS=1
+  --unit-test)
+    _NO_TESTS=0
     ;;
   *)
     echo "Usage: $0 [--version=] [--prefix=$_PREFIX] [--with-openssl=|--without-openssl]"
-    echo "            [--with-readline=|--without-readline] [--with-gdbm=] [--no-tests]"
+    echo "            [--with-readline=|--without-readline] [--with-gdbm=] [--unit-test]"
     exit
     ;;
   esac
@@ -50,7 +50,7 @@ done
 
 # Build dependencies
 "$_SC_DIR/_build_openssl.sh" "$_PREFIX" "$_SCRATCH_DIR" "$_OPENSSL"
-"$_SC_DIR/_build_libyaml.sh" "$_PREFIX" "$_SCRATCH_DIR"
+"$_SC_DIR/_build_libyaml.sh" "$_PREFIX" "$_SCRATCH_DIR" "$_NO_TESTS"
 "$_SC_DIR/_build_readline.sh" "$_PREFIX" "$_SCRATCH_DIR" "$_READLINE"
 
 [[ -z "$_GDBM" ]] && _EXTRA_ARGS="$_EXTRA_ARGS --without-gdbm" || \

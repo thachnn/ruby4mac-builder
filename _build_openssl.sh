@@ -23,6 +23,7 @@ then
 
   # Disable static libraries
   sed -i- -e 's/^\(LIBS *=\).*/\1/;s/^\(INSTALL_LIBS *=\).*/\1/' Makefile
-
   make -j2 install_dev install_engines
+
+  rmdir "$_PREFIX"/lib/engines-*
 fi

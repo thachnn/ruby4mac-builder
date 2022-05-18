@@ -26,7 +26,7 @@ git clone --depth=1 https://github.com/thachnn/ruby4mac-builder.git
 cd ruby4mac-builder
 
 ./build.sh --version=2.7.5 --prefix=/Library/Frameworks/Ruby.framework/Versions/2.7 \
-  --scratch-path=/usr/local/src --with-openssl=1.1.1n --without-readline --no-tests
+  --scratch-path=/usr/local/src --with-openssl=1.1.1n --without-readline --unit-test
 
 # Setup environments
 sudo ln -s /Library/Frameworks/Ruby.framework/Versions/2.7/lib/ruby/gems/2.7.0 /Library/Ruby/Gems/
@@ -35,5 +35,10 @@ sudo ln -s /Library/Frameworks/Ruby.framework/Versions/2.7/bin/* /usr/local/bin/
 
 ## Examples
 
+- Install Ruby 2.7.5 with GDBM for `universal` architecture
 ```bash
+./build.sh --prefix=/Library/Frameworks/Ruby.framework/Versions/2.7 \
+  --scratch-path=/usr/local/src --with-gdbm=1 --extra-opts=--enable-multiarch
+
+find /Library/Frameworks/Ruby.framework/Versions/2.7/{include,lib/pkgconfig} -depth 1 ! -name '*ruby*' -delete
 ```
