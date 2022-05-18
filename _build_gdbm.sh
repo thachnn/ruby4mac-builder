@@ -1,7 +1,7 @@
 #!/bin/bash
 set -xe
 
-_VER="${3:-1.22}"
+[[ "${3:-1}" == 1 ]] && _VER=1.22 || _VER="$3"
 _PKG="gdbm-$_VER"
 _PREFIX="$1"
 _SCRATCH_DIR="$2"

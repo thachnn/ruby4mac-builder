@@ -14,10 +14,15 @@ then
   tar -xf "$_PKG.tar.gz"
 
   cd "$_PKG"
+  # Fix CommonRandom.h error on old macOS
+  sed -i '' $'s|^\\(# *include <CommonCrypto/Common\\)Random.h>|\\1CryptoError.h>\\\n&|' \
+    crypto/rand/rand_unix.c
+
   perl Configure darwin64-x86_64-cc enable-ec_nistp_64_gcc_128 "--prefix=$_PREFIX" \
     "--openssldir=$_PREFIX/etc/openssl" shared enable-static-engine no-tests
 
-  # Build lib only
-  # TODO: sed -i- 's,^LIBS=apps/libapps\.a ,LIBS=,' Makefile
+  # Disable static libraries
+  sed -i- -e 's/^\(LIBS *=\).*/\1/;s/^\(INSTALL_LIBS *=\).*/\1/' Makefile
+
   make -j2 install_dev install_engines
 fi
