@@ -21,7 +21,8 @@ then
 
   # Disable documents
   sed -i- -e 's/ install-doc / /;/(man3dir) .*(docdir)/d' Makefile
-  sed -i- '/mkdirs .*(bindir)/d' shlib/Makefile
+  sed -i- -e '/mkdirs .*(bindir)/d;/shlib-install .*(SHARED_HISTORY)$/d' \
+    -e 's/^\(SHARED_LIBS *=.*\) \$(SHARED_HISTORY)/\1/' shlib/Makefile
 
   make -j2 V=1 install
 fi

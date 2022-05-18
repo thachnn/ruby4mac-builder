@@ -16,11 +16,11 @@ tar -xf "$_PKG.tar.xz"
 
 cd "$_PKG"
 ./configure "--prefix=$_PREFIX" --enable-shared "--with-opt-dir=$_PREFIX" \
-  $_EXTRA_ARGS CFLAGS=-O2
+  --without-gmp $_EXTRA_ARGS CFLAGS=-O2 CXXFLAGS=-O2
 
-# TODO: sed -i- "s: -L$_PREFIX/lib\$: -L\${libdir}:" *.pc
+# Optimize .pc file
+sed -i- -e "s:$_PREFIX/lib :\${libdir} :;s:$_PREFIX/lib\$:\${libdir}:" ruby-*.pc
 
 make -j2 V=1
 make install
-
-# Cleanup the built
+# TODO: [[ "$_NO_TESTS" == 0 ]] && make check

@@ -4,7 +4,7 @@ _SC_DIR="$(dirname "$0")"
 
 _PREFIX=/usr/local
 _SCRATCH_DIR="$(cd "$_SC_DIR/.."; pwd)"
-_EXTRA_ARGS='--without-gmp --disable-install-rdoc'
+_EXTRA_ARGS=--disable-install-rdoc
 
 # Parse command line arguments
 while [[ $# -gt 0 ]]; do

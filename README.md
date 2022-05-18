@@ -38,7 +38,13 @@ sudo ln -s /Library/Frameworks/Ruby.framework/Versions/2.7/bin/* /usr/local/bin/
 - Install Ruby 2.7.5 with GDBM for `universal` architecture
 ```bash
 ./build.sh --prefix=/Library/Frameworks/Ruby.framework/Versions/2.7 \
-  --scratch-path=/usr/local/src --with-gdbm=1 --extra-opts=--enable-multiarch
+  --scratch-path=/usr/local/src --with-gdbm=1 --extra-opts=--with-arch=i386,x86_64
 
 find /Library/Frameworks/Ruby.framework/Versions/2.7/{include,lib/pkgconfig} -depth 1 ! -name '*ruby*' -delete
+```
+
+```bash
+# --enable-rpath
+# --enable-install-rdoc | --with-rdoc=ri,html
+# --with-static-linked-ext
 ```
