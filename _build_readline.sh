@@ -19,7 +19,9 @@ then
   # There is no termcap.pc in the base system
   sed -i- 's/^Requires\.private:/# &/' readline.pc
 
-  # Install lib only
-  # TODO: sed -i- 's/ install-doc / /' Makefile
+  # Disable documents
+  sed -i- -e 's/ install-doc / /;/(man3dir) .*(docdir)/d' Makefile
+  sed -i- '/mkdirs .*(bindir)/d' shlib/Makefile
+
   make -j2 V=1 install
 fi
