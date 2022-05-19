@@ -33,6 +33,14 @@ while [[ $# -gt 0 ]]; do
   --with-gdbm=*)
     _GDBM="${1#*=}"
     ;;
+  --with-universal)
+    _UNIVERSAL=1
+    _EXTRA_ARGS="$_EXTRA_ARGS --with-arch=i386,x86_64"
+    ;;
+  --enable-rpath)
+    _RPATH=1
+    _EXTRA_ARGS="$_EXTRA_ARGS $1"
+    ;;
   --extra-opts=*)
     _EXTRA_ARGS="$_EXTRA_ARGS ${1#*=}"
     ;;
@@ -49,12 +57,12 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Build dependencies
-"$_SC_DIR/_build_openssl.sh" "$_PREFIX" "$_SCRATCH_DIR" "$_OPENSSL"
-"$_SC_DIR/_build_libyaml.sh" "$_PREFIX" "$_SCRATCH_DIR" "$_NO_TESTS"
-"$_SC_DIR/_build_readline.sh" "$_PREFIX" "$_SCRATCH_DIR" "$_READLINE"
+"$_SC_DIR/_build_openssl.sh" "$_PREFIX" "$_SCRATCH_DIR" "$_UNIVERSAL" "$_RPATH" "$_OPENSSL"
+"$_SC_DIR/_build_libyaml.sh" "$_PREFIX" "$_SCRATCH_DIR" "$_UNIVERSAL" "$_RPATH" '' "$_NO_TESTS"
+"$_SC_DIR/_build_readline.sh" "$_PREFIX" "$_SCRATCH_DIR" "$_UNIVERSAL" "$_RPATH" "$_READLINE"
 
 [[ -z "$_GDBM" ]] && _EXTRA_ARGS="$_EXTRA_ARGS --without-gdbm" || \
-  "$_SC_DIR/_build_gdbm.sh" "$_PREFIX" "$_SCRATCH_DIR" "$_GDBM" "$_NO_TESTS"
+  "$_SC_DIR/_build_gdbm.sh" "$_PREFIX" "$_SCRATCH_DIR" "$_UNIVERSAL" "$_RPATH" "$_GDBM" "$_NO_TESTS"
 
 
 "$_SC_DIR/_build_ruby.sh" "$_PREFIX" "$_SCRATCH_DIR" "$_VERSION" "$_EXTRA_ARGS" "$_NO_TESTS"
