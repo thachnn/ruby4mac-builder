@@ -31,7 +31,9 @@ then
   make -j2 V=1 install
   [[ "$_NO_TESTS" != 0 ]] || make check
 
-  [[ "$_RPATH" != 1 ]] || install_name_tool -id \
-    "$(otool -XD "$_PREFIX/lib/libyaml.dylib" | sed "s:$_PREFIX/lib/:@rpath/:")" \
-    "$_PREFIX/lib/libyaml.dylib"
+  if [[ "$_RPATH" == 1 ]]; then
+    install_name_tool -id \
+      "$(otool -XD "$_PREFIX/lib/libyaml.dylib" | sed "s:$_PREFIX/lib/:@rpath/:")" \
+      "$_PREFIX/lib/libyaml.dylib"
+  fi
 fi
