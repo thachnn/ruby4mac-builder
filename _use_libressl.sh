@@ -24,8 +24,8 @@ then
   [[ -s "$_PKG.tar.gz" ]] || \
     curl -OkfSL "https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/$_PKG.tar.gz"
 
-  tar -C "$_PREFIX" -xf "$_PKG.tar.gz" --strip-components=1 \
-    --exclude='*Makefile.*' "$_PKG/include/openssl"
+  tar -C "$_PREFIX" -xf "$_PKG.tar.gz" --strip-components=1 --exclude='*Makefile.*' \
+    "$_PKG/include/openssl"
 
   # Patch for universal arch
   if [[ "$_UNIVERSAL" == 1 ]]; then

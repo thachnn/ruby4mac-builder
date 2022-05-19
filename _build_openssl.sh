@@ -1,6 +1,6 @@
 #!/bin/bash
 set -xe
-_SC_DIR="$(dirname "$0")"
+_SC_DIR="$(cd "`dirname "$0"`"; pwd)"
 
 _VER="${5:-1.1.1l}"
 _PKG="openssl-$_VER"
@@ -29,7 +29,7 @@ then
     Configurations/unix-Makefile.tmpl
 
   # enable-ec_nistp_64_gcc_128
-  _OPTS="'--prefix=$_PREFIX' shared enable-static-engine no-tests"
+  _OPTS="--prefix=$_PREFIX shared enable-static-engine no-tests"
   [[ "$_RPATH" == 1 ]] && _OPTS="$_OPTS --openssldir=/etc/ssl"
 
   perl Configure "--openssldir=$_PREFIX/etc/openssl" $_OPTS darwin64-x86_64-cc
@@ -56,11 +56,7 @@ $(grep -e ' BN_LLONG\| SIXTY_FOUR_BIT\| THIRTY_TWO_BIT' \
   fi
 
   if [[ "$_RPATH" == 1 ]]; then
-    for i in crypto ssl ; do
-      install_name_tool -id \
-        "$(otool -XD "$_PREFIX/lib/lib$i.dylib" | sed "s:$_PREFIX/lib/:@rpath/:")" \
-        "$_PREFIX/lib/lib$i.dylib"
-    done
-    install_name_tool -add_rpath '@loader_path' "$_PREFIX/lib/libssl.dylib"
+    "$_SC_DIR/change_to_rpath.sh" "$_PREFIX/lib/libcrypto.dylib"
+    "$_SC_DIR/change_to_rpath.sh" "$_PREFIX/lib/libssl.dylib"
   fi
 fi

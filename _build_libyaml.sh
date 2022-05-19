@@ -1,5 +1,6 @@
 #!/bin/bash
 set -xe
+_SC_DIR="$(cd "`dirname "$0"`"; pwd)"
 
 _VER="${5:-0.2.5}"
 _PKG="yaml-$_VER"
@@ -31,9 +32,5 @@ then
   make -j2 V=1 install
   [[ "$_NO_TESTS" != 0 ]] || make check
 
-  if [[ "$_RPATH" == 1 ]]; then
-    install_name_tool -id \
-      "$(otool -XD "$_PREFIX/lib/libyaml.dylib" | sed "s:$_PREFIX/lib/:@rpath/:")" \
-      "$_PREFIX/lib/libyaml.dylib"
-  fi
+  [[ "$_RPATH" != 1 ]] || "$_SC_DIR/change_to_rpath.sh" "$_PREFIX/lib/libyaml.dylib"
 fi
