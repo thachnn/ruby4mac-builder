@@ -51,3 +51,9 @@ sudo ln -s /Library/Frameworks/Ruby.framework/Versions/2.7/bin/* /usr/local/bin/
 find /opt/local/{include,lib/pkgconfig} -depth 1 ! -name 'ruby*' -delete
 rm -rf /opt/local/lib/*.la /opt/local/lib/ruby/{site_ruby,vendor_ruby}/* /opt/local/include/ruby-*/ruby-*/
 ```
+
+- Build Ruby 2.7.6 using `LibreSSL` and `libedit` from OS (without GDBM extension)
+```bash
+./build.sh --version=2.7.6 --prefix=/Library/Frameworks/Ruby.framework/Versions/2.7 \
+  --scratch-path=/usr/local/src --without-openssl --without-readline --extra-opts=--with-out-ext=gdbm
+```

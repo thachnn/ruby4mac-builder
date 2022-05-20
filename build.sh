@@ -61,7 +61,7 @@ done
 "$_SC_DIR/_build_libyaml.sh" "$_PREFIX" "$_SCRATCH_DIR" "$_UNIVERSAL" "$_RPATH" '' "$_NO_TESTS"
 "$_SC_DIR/_build_readline.sh" "$_PREFIX" "$_SCRATCH_DIR" "$_UNIVERSAL" "$_RPATH" "$_READLINE"
 
-[[ -z "$_GDBM" ]] && _EXTRA_ARGS="$_EXTRA_ARGS --without-gdbm" || \
+[[ -z "$_GDBM" ]] || \
   "$_SC_DIR/_build_gdbm.sh" "$_PREFIX" "$_SCRATCH_DIR" "$_UNIVERSAL" "$_RPATH" "$_GDBM" "$_NO_TESTS"
 
 

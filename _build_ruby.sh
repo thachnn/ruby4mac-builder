@@ -36,4 +36,7 @@ if [[ "$_EXTRA_ARGS" == *--enable-rpath* ]]; then
   done
 fi
 
-[[ "$_NO_TESTS" != 0 ]] || make check-ruby
+if [[ "$_NO_TESTS" == 0 ]]; then
+  sed -i- 's:^\(MINIRUBY *= *\)\./miniruby:\1$(prefix)/bin/ruby:' Makefile
+  touch -r Makefile- Makefile && make test test-all
+fi

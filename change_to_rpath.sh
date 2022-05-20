@@ -29,6 +29,3 @@ if [[ -n "$_DEPS" ]]; then
     install_name_tool -add_rpath '@executable_path/../lib' "$_LIB"
   fi
 fi
-
-# Verifying
-otool -l "$_LIB" | grep -i -A3 path
