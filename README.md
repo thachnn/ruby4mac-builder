@@ -48,5 +48,6 @@ sudo ln -s /Library/Frameworks/Ruby.framework/Versions/2.7/bin/* /usr/local/bin/
   --with-gdbm=1 --with-universal --enable-rpath --extra-opts=--with-static-linked-ext --unit-test
 
 # Cleanup
-find /opt/local/{include,lib/pkgconfig} -depth 1 ! -name '*ruby*' -delete
+find /opt/local/{include,lib/pkgconfig} -depth 1 ! -name 'ruby*' -delete
+rm -rf /opt/local/lib/*.la /opt/local/lib/ruby/{site_ruby,vendor_ruby}/* /opt/local/include/ruby-*/ruby-*/
 ```

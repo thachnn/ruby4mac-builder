@@ -1,5 +1,6 @@
 #!/bin/bash
 set -xe
+_SC_DIR="$(cd "`dirname "$0"`"; pwd)"
 
 _VER="${3:-2.7.5}"
 _PKG="ruby-$_VER"
@@ -23,5 +24,16 @@ sed -i- -e "s:$_PREFIX/lib :\${libdir} :;s:$_PREFIX/lib\$:\${libdir}:" ruby-*.pc
 
 make -j2 V=1
 make install
+
+# Correct rpath for dynamic libraries
+if [[ "$_EXTRA_ARGS" == *--enable-rpath* ]]; then
+  "$_SC_DIR/change_to_rpath.sh" "$_PREFIX/bin/ruby" "$_PREFIX/lib"
+  "$_SC_DIR/change_to_rpath.sh" "$_PREFIX/lib/libruby.dylib"
+
+  for f in $(cd "$_PREFIX/lib"; find ruby -name '*.bundle'); do
+    "$_SC_DIR/change_to_rpath.sh" "$_PREFIX/lib/$f" "$_PREFIX/lib" \
+      "@loader_path/$(dirname "$f" | sed 's:[^/]*:..:g')"
+  done
+fi
 
 [[ "$_NO_TESTS" != 0 ]] || make check-ruby
