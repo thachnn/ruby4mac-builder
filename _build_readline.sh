@@ -21,12 +21,15 @@ then
   rm -rf "$_PKG"
   tar -xf "$_PKG.tar.gz"
 
-  # Build options
-  [[ "$_UNIVERSAL" != 1 ]] || _FLAGS='-arch i386 -arch x86_64'
-
   cd "$_PKG"
+  # Correct link options
+  sed -i- 's/\(XLDFLAGS *= *\)@LDFLAGS@/\1$(LDFLAGS)/' shlib/Makefile.in
+
+  # Build options
+  _CFLAGS=-O2
+  [[ "$_UNIVERSAL" != 1 ]] || _CFLAGS="$_CFLAGS -arch i386 -arch x86_64"
   ./configure "--prefix=$_PREFIX" --disable-static --disable-install-examples \
-    "CFLAGS=-O2 $_FLAGS" "LDFLAGS=$_FLAGS"
+    "CFLAGS=$_CFLAGS"
 
   # There is no termcap.pc in the base system
   sed -i- 's/^Requires\.private:/# &/' readline.pc
