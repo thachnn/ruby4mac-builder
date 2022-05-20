@@ -9,7 +9,12 @@ _SCRATCH_DIR="$2"
 _UNIVERSAL="$3"
 _RPATH="$4"
 
-if [[ ! -e "$_PREFIX/lib/libreadline.dylib" ]]
+if [[ "$_VER" == 0 ]]
+then
+  # Use system `libedit`
+  test -n "$(find /Library/Developer/CommandLineTools -path '*/readline/readline.h' \
+    -print -quit)"
+elif [[ ! -e "$_PREFIX/lib/libreadline.dylib" ]]
 then
   cd "$_SCRATCH_DIR"
   [[ -s "$_PKG.tar.gz" ]] || curl -OkfSL "https://ftp.gnu.org/gnu/readline/$_PKG.tar.gz"
