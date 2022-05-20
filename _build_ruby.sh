@@ -23,4 +23,5 @@ sed -i- -e "s:$_PREFIX/lib :\${libdir} :;s:$_PREFIX/lib\$:\${libdir}:" ruby-*.pc
 
 make -j2 V=1
 make install
-# TODO: [[ "$_NO_TESTS" == 0 ]] && make check
+
+[[ "$_NO_TESTS" != 0 ]] || make check-ruby
