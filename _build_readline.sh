@@ -17,12 +17,11 @@ then
   tar -xf "$_PKG.tar.gz"
 
   # Build options
-  _CFLAGS=-O2
-  [[ "$_UNIVERSAL" != 1 ]] || _CFLAGS="$_CFLAGS -arch i386 -arch x86_64"
+  [[ "$_UNIVERSAL" != 1 ]] || _FLAGS='-arch i386 -arch x86_64'
 
   cd "$_PKG"
   ./configure "--prefix=$_PREFIX" --disable-static --disable-install-examples \
-    "CFLAGS=$_CFLAGS"
+    "CFLAGS=-O2 $_FLAGS" "LDFLAGS=$_FLAGS"
 
   # There is no termcap.pc in the base system
   sed -i- 's/^Requires\.private:/# &/' readline.pc
