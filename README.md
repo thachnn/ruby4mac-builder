@@ -57,3 +57,9 @@ rm -fv /opt/local/lib/*.la
 ./build.sh --version=2.7.6 --prefix=/Library/Frameworks/Ruby.framework/Versions/2.7 \
   --scratch-path=/usr/local/src --without-openssl --without-readline --extra-opts=--with-out-ext=gdbm
 ```
+
+- Build Ruby 2.4.10 using `LibreSSL`/`OpenSSL` and `libedit` from OS
+```bash
+./build.sh --version=2.4.10 --prefix=/Library/Frameworks/Ruby.framework/Versions/2.4 \
+  --scratch-path=/usr/local/src --without-openssl --without-readline --with-gdbm=1.18.1 --unit-test
+```

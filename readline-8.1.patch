@@ -1,0 +1,67 @@
+diff --git a/bind.c b/bind.c
+index 87596dc..7610378 100644
+--- a/bind.c
++++ b/bind.c
+@@ -1234,7 +1234,7 @@ parser_if (char *args)
+ #endif /* VI_MODE */
+   else if (_rl_strnicmp (args, "version", 7) == 0)
+     {
+-      int rlversion, versionarg, op, previ, major, minor;
++      int rlversion, versionarg, op, previ, major, minor, opresult;
+ 
+       _rl_parsing_conditionalized_out = 1;
+       rlversion = RL_VERSION_MAJOR*10 + RL_VERSION_MINOR;
+@@ -1294,24 +1294,25 @@ parser_if (char *args)
+       switch (op)
+ 	{
+ 	case OP_EQ:
+-	  _rl_parsing_conditionalized_out = rlversion == versionarg;
++ 	  opresult = rlversion == versionarg;
+ 	  break;
+ 	case OP_NE:
+-	  _rl_parsing_conditionalized_out = rlversion != versionarg;
++	  opresult = rlversion != versionarg;
+ 	  break;
+ 	case OP_GT:
+-	  _rl_parsing_conditionalized_out = rlversion > versionarg;
++	  opresult = rlversion > versionarg;
+ 	  break;
+ 	case OP_GE:
+-	  _rl_parsing_conditionalized_out = rlversion >= versionarg;
++	  opresult = rlversion >= versionarg;
+ 	  break;
+ 	case OP_LT:
+-	  _rl_parsing_conditionalized_out = rlversion < versionarg;
++	  opresult = rlversion < versionarg;
+ 	  break;
+ 	case OP_LE:
+-	  _rl_parsing_conditionalized_out = rlversion <= versionarg;
++	  opresult = rlversion <= versionarg;
+ 	  break;
+ 	}
++      _rl_parsing_conditionalized_out = 1 - opresult;
+     }
+   /* Check to see if the first word in ARGS is the same as the
+      value stored in rl_readline_name. */
+diff --git a/display.c b/display.c
+index 38b3d0e..f5d3294 100644
+--- a/display.c
++++ b/display.c
+@@ -1598,7 +1598,7 @@ puts_face (const char *str, const char *face, int n)
+   char cur_face;
+ 
+   for (cur_face = FACE_NORMAL, i = 0; i < n; i++)
+-    putc_face (str[i], face[i], &cur_face);
++    putc_face ((unsigned char) str[i], face[i], &cur_face);
+   putc_face (EOF, FACE_NORMAL, &cur_face);
+ }
+ 
+diff --git a/patchlevel b/patchlevel
+index d8c9df7..7cbda82 100644
+--- a/patchlevel
++++ b/patchlevel
+@@ -1,3 +1,3 @@
+ # Do not edit -- exists only for use by patch
+ 
+-0
++2

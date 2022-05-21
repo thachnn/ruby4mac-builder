@@ -1,0 +1,94 @@
+diff --git a/histfile.c b/histfile.c
+index dc64bde..e72018c 100644
+--- a/histfile.c
++++ b/histfile.c
+@@ -305,6 +305,7 @@ read_history_range (const char *filename, int from, int to)
+   if (file_size == 0)
+     {
+       free (input);
++      close (file);
+       return 0;	/* don't waste time if we don't have to */
+     }
+ 
+@@ -371,6 +372,8 @@ read_history_range (const char *filename, int from, int to)
+   history_multiline_entries += has_timestamps && history_write_timestamps;  
+ 
+   /* Skip lines until we are at FROM. */
++  if (has_timestamps)
++    last_ts = buffer;
+   for (line_start = line_end = buffer; line_end < bufend && current_line < from; line_end++)
+     if (*line_end == '\n')
+       {
+@@ -379,7 +382,17 @@ read_history_range (const char *filename, int from, int to)
+ 	   line.  We should check more extensively here... */
+ 	if (HIST_TIMESTAMP_START(p) == 0)
+ 	  current_line++;
++	else
++	  last_ts = p;
+ 	line_start = p;
++	/* If we are at the last line (current_line == from) but we have
++	   timestamps (has_timestamps), then line_start points to the
++	   text of the last command, and we need to skip to its end. */
++	if (current_line >= from && has_timestamps)
++	  {
++	    for (line_end = p; line_end < bufend && *line_end != '\n'; line_end++);
++	    line_start = (*line_end == '\n') ? line_end + 1 : line_end;
++	  }
+       }
+ 
+   /* If there are lines left to gobble, then gobble them now. */
+@@ -606,6 +619,7 @@ history_truncate_file (const char *fname, int lines)
+ 
+   if (rv != 0)
+     {
++      rv = errno;
+       if (tempname)
+ 	unlink (tempname);
+       history_lines_written_to_file = 0;
+@@ -753,6 +767,7 @@ mmap_error:
+ 
+   if (rv != 0)
+     {
++      rv = errno;
+       if (tempname)
+ 	unlink (tempname);
+       history_lines_written_to_file = 0;
+diff --git a/misc.c b/misc.c
+index 64b1457..42005b0 100644
+--- a/misc.c
++++ b/misc.c
+@@ -576,6 +576,7 @@ int
+ rl_get_previous_history (int count, int key)
+ {
+   HIST_ENTRY *old_temp, *temp;
++  int had_saved_line;
+ 
+   if (count < 0)
+     return (rl_get_next_history (-count, key));
+@@ -588,6 +589,7 @@ rl_get_previous_history (int count, int key)
+     _rl_history_saved_point = (rl_point == rl_end) ? -1 : rl_point;
+ 
+   /* If we don't have a line saved, then save this one. */
++  had_saved_line = _rl_saved_line_for_history != 0;
+   rl_maybe_save_line ();
+ 
+   /* If the current line has changed, save the changes. */
+@@ -611,7 +613,8 @@ rl_get_previous_history (int count, int key)
+ 
+   if (temp == 0)
+     {
+-      rl_maybe_unsave_line ();
++      if (had_saved_line == 0)
++        _rl_free_saved_history_line ();
+       rl_ding ();
+     }
+   else
+diff --git a/patchlevel b/patchlevel
+index d8c9df7..626a945 100644
+--- a/patchlevel
++++ b/patchlevel
+@@ -1,3 +1,3 @@
+ # Do not edit -- exists only for use by patch
+ 
+-0
++4

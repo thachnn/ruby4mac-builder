@@ -39,7 +39,7 @@ fi
 # Cleanup & fix permissions
 rmdir "$_PREFIX"/lib/ruby/{site_ruby,vendor_ruby}/*/*-darwin*/ \
   "$_PREFIX"/lib/ruby/{site_ruby,vendor_ruby}/*/ \
-  "$_PREFIX"/include/ruby-*/ruby-*/*-darwin*/ "$_PREFIX"/include/ruby-*/ruby-*/
+  "$_PREFIX"/include/ruby-*/ruby-*/*-darwin*/ "$_PREFIX"/include/ruby-*/ruby-*/ || true
 chmod g+w "$_PREFIX"/bin "$_PREFIX"/lib/ruby/*/*-darwin*/rbconfig.rb
 chmod -R g+w "$_PREFIX"/lib/ruby/{site_ruby,vendor_ruby} "$_PREFIX"/lib/ruby/gems/*/*
 chmod -R g-w "$_PREFIX"/lib/ruby/gems/*/specifications/default || true

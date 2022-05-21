@@ -27,8 +27,9 @@ then
   # Disable bin tools
   sed -i- 's/^\(bin_PROGRAMS *=\).*/\1/' src/Makefile
   sed -i- 's/\(SUBDIRS *=\).* src .* tests$/\1 src tests/' Makefile
-  sed -i- 's/^gdbmtool /exit 77 || &/' tests/testsuite
+  sed -i- -e 's/^gdbmtool /exit 77 || &/;s/; t_wordwrap /; exit 77&/' tests/testsuite
   find tests -name Makefile -exec sed -i- 's/^\([A-Z_]* *=\) *gdbmtool/\1/' {} +
+  sed -i- -e 's/ t_wordwrap\$(EXEEXT)//;s/ t_wordwrap\.c$//' tests/Makefile
 
   [[ "$_NO_TESTS" == 0 ]] || sed -i '' 's/\(SUBDIRS *=.*\) tests$/\1/' Makefile
   make -j2 V=1 install

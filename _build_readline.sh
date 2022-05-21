@@ -22,6 +22,8 @@ then
   tar -xf "$_PKG.tar.gz"
 
   cd "$_PKG"
+  # Apply patches
+  [[ ! -s "$_SC_DIR/$_PKG.patch" ]] || patch -p1 -i "$_SC_DIR/$_PKG.patch"
   # Correct link options
   sed -i- 's/\(XLDFLAGS *= *\)@LDFLAGS@/\1$(LDFLAGS)/' shlib/Makefile.in
 
