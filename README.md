@@ -26,7 +26,7 @@ git clone --depth=1 https://github.com/thachnn/ruby4mac-builder.git
 cd ruby4mac-builder
 
 ./build.sh --version=2.7.6 --prefix=/Library/Frameworks/Ruby.framework/Versions/2.7 \
-  --scratch-path=/usr/local/src --with-openssl=1.1.1n --without-readline --unit-test
+  --scratch-path=/usr/local/src --with-openssl=1.1.1n --with-gdbm=1.23 --unit-test
 
 # Setup environments
 sudo ln -s /Library/Frameworks/Ruby.framework/Versions/2.7/lib/ruby/gems/2.7.0 /Library/Ruby/Gems/
@@ -42,14 +42,14 @@ sudo ln -s /Library/Frameworks/Ruby.framework/Versions/2.7/bin/* /usr/local/bin/
   --scratch-path=/usr/local/src --with-gdbm=1 --with-universal --extra-opts=--enable-install-rdoc
 ```
 
-- Build Ruby 2.6.8 as portable package
+- Build Ruby 2.6.8 as portable package (`--with-static-linked-ext` is optional)
 ```bash
 ./build.sh --version=2.6.8 --prefix=/opt/local --scratch-path=/usr/local/src \
   --with-gdbm=1 --with-universal --enable-rpath --extra-opts=--with-static-linked-ext --unit-test
 
 # Cleanup
-find /opt/local/{include,lib/pkgconfig} -depth 1 ! -name 'ruby*' -delete
-rm -rf /opt/local/lib/*.la /opt/local/lib/ruby/{site_ruby,vendor_ruby}/* /opt/local/include/ruby-*/ruby-*/
+find /opt/local/{include,lib/pkgconfig} -depth 1 ! -name 'ruby*' -exec rm -rfv {} +
+rm -fv /opt/local/lib/*.la
 ```
 
 - Build Ruby 2.7.6 using `LibreSSL` and `libedit` from OS (without GDBM extension)

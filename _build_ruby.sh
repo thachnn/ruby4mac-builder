@@ -36,6 +36,14 @@ if [[ "$_EXTRA_ARGS" == *--enable-rpath* ]]; then
   done
 fi
 
+# Cleanup & fix permissions
+rmdir "$_PREFIX"/lib/ruby/{site_ruby,vendor_ruby}/*/*-darwin*/ \
+  "$_PREFIX"/lib/ruby/{site_ruby,vendor_ruby}/*/ \
+  "$_PREFIX"/include/ruby-*/ruby-*/*-darwin*/ "$_PREFIX"/include/ruby-*/ruby-*/
+chmod g+w "$_PREFIX"/bin "$_PREFIX"/lib/ruby/*/*-darwin*/rbconfig.rb
+chmod -R g+w "$_PREFIX"/lib/ruby/{site_ruby,vendor_ruby} "$_PREFIX"/lib/ruby/gems/*/*
+chmod -R g-w "$_PREFIX"/lib/ruby/gems/*/specifications/default || true
+
 if [[ "$_NO_TESTS" == 0 ]]; then
   sed -i- 's:^\(MINIRUBY *= *\)\./miniruby:\1$(prefix)/bin/ruby:' Makefile
   touch -r Makefile- Makefile && make test test-all
