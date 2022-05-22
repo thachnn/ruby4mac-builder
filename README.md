@@ -18,8 +18,8 @@ export SDKROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk
 
 ```bash
 # Prepare the installation target
-sudo mkdir -p /Library/Frameworks/Ruby.framework/Versions
-( cd /Library/Frameworks/Ruby.framework && sudo chown :admin Versions && sudo chmod g+w Versions )
+sudo mkdir -p /Library/Frameworks/Ruby.framework/Versions/2.7
+( cd /Library/Frameworks/Ruby.framework && sudo chown -R :admin Versions && sudo chmod -R g+w Versions )
 
 # Use the stable release
 git clone --depth=1 https://github.com/thachnn/ruby4mac-builder.git

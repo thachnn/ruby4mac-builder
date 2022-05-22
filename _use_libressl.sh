@@ -8,6 +8,7 @@ set -xe
 if [[ ! -e "$_PREFIX/lib/libssl.dylib" ]]
 then
   # Use the latest OpenSSL/LibreSSL
+  mkdir -p "$_PREFIX/lib"
   for i in crypto ssl ; do
     ln -s "$(ls -1 "/usr/lib/lib$i".*.dylib | tail -1)" "$_PREFIX/lib/lib$i.dylib"
   done

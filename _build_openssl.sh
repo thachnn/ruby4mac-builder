@@ -25,20 +25,22 @@ then
     crypto/rand/rand_unix.c
 
   # Disable static libraries
-  sed -i- -e 's/^\(LIBS *=\).*/\1/;s/^\(INSTALL_LIBS *=\).*/\1/' \
+  sed -i- -e 's/^\(INSTALL_LIBS *=\).*/\1/;s/mv -f Makefile\.new Makefile/& || true/' \
     Configurations/unix-Makefile.tmpl
 
+  [[ "$_RPATH" == 1 ]] && _SSLDIR=/etc/ssl || _SSLDIR="$_PREFIX/etc/openssl"
   # enable-ec_nistp_64_gcc_128
-  _OPTS="--prefix=$_PREFIX shared enable-static-engine no-tests"
-  [[ "$_RPATH" == 1 ]] && _OPTS="$_OPTS --openssldir=/etc/ssl"
-
-  perl Configure "--openssldir=$_PREFIX/etc/openssl" $_OPTS darwin64-x86_64-cc
+  perl Configure "--prefix=$_PREFIX" "--openssldir=$_SSLDIR" enable-static-engine \
+    shared darwin64-x86_64-cc
   make -j2 install_dev install_engines
+
   rmdir "$_PREFIX"/lib/engines-*
 
   if [[ "$_UNIVERSAL" == 1 ]]; then
     make clean
-    perl Configure "--openssldir=$_PREFIX/etc/openssl" $_OPTS darwin-i386-cc
+
+    perl Configure "--prefix=$_PREFIX" "--openssldir=$_SSLDIR" enable-static-engine \
+      shared darwin-i386-cc
     make -j2 install_dev install_engines "DESTDIR=$_PREFIX/tmp"
 
     # Patch headers for universal arch
