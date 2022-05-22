@@ -18,8 +18,8 @@ export SDKROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk
 
 ```bash
 # Prepare the installation target
-sudo mkdir -p /Library/Frameworks/Ruby.framework/Versions/2.7
-( cd /Library/Frameworks/Ruby.framework && sudo chown -R :admin Versions && sudo chmod -R g+w Versions )
+sudo mkdir -p /Library/Frameworks/Ruby.framework/Versions
+( cd /Library/Frameworks/Ruby.framework && sudo chown :admin Versions && sudo chmod g+w Versions )
 
 # Use the stable release
 git clone --depth=1 https://github.com/thachnn/ruby4mac-builder.git
@@ -45,7 +45,7 @@ sudo ln -s /Library/Frameworks/Ruby.framework/Versions/2.7/bin/* /usr/local/bin/
 - Build Ruby 2.6.8 as portable package (`--with-static-linked-ext` is optional)
 ```bash
 ./build.sh --version=2.6.8 --prefix=/opt/local --scratch-path=/usr/local/src \
-  --with-gdbm=1 --with-universal --enable-rpath --extra-opts=--with-static-linked-ext --unit-test
+  --with-gdbm=1.20 --with-universal --enable-rpath --extra-opts=--with-static-linked-ext --unit-test
 
 # Cleanup
 find /opt/local/{include,lib/pkgconfig} -depth 1 ! -name 'ruby*' -exec rm -rfv {} +
