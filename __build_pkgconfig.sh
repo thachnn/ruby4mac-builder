@@ -11,15 +11,14 @@ _BREW_PC="$5"
 if [[ ! -x "$_PREFIX/bin/pkg-config" ]]
 then
   cd "$_SCRATCH_DIR"
-  [[ -s "$_PKG.tar.gz" ]] || \
-    curl -OkfSL "https://pkgconfig.freedesktop.org/releases/$_PKG.tar.gz"
+  [[ -s "$_PKG.tar.gz" ]] || curl -OkfSL "http://fresh-center.net/linux/misc/$_PKG.tar.gz"
   rm -rf "$_PKG"
   tar -xf "$_PKG.tar.gz"
 
-  pc_path="$(sort <<< "$_PREFIX/lib/pkgconfig
+  pc_path="$(awk '0==x[$0]++' <<< "$_PREFIX/lib/pkgconfig
 $_PREFIX/share/pkgconfig
 /usr/local/lib/pkgconfig
-/usr/lib/pkgconfig" | uniq | tr "\n" ':')"
+/usr/lib/pkgconfig" | tr "\n" ':')"
 
   inc_path="$(find -L /Applications/Xcode.app/Contents/Developer \
     /Library/Developer/CommandLineTools -regex '.*/SDKs/MacOSX[^/]*\.sdk/usr/include' \

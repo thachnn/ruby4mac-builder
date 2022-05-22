@@ -23,7 +23,7 @@ then
   # Our aclocal must go first
   echo "$_PREFIX/share/aclocal
 /usr/local/share/aclocal
-/usr/share/aclocal" | uniq > "$_PREFIX/share/aclocal/dirlist"
+/usr/share/aclocal" | awk '0==x[$0]++' > "$_PREFIX/share/aclocal/dirlist"
 
   cd "$_PREFIX/bin" && rm -f automake aclocal && \
     ln -s automake-* automake && ln -s aclocal-* aclocal
