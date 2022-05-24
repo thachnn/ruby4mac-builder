@@ -18,7 +18,7 @@ then
   pc_path="$(awk '0==x[$0]++' <<< "$_PREFIX/lib/pkgconfig
 $_PREFIX/share/pkgconfig
 /usr/local/lib/pkgconfig
-/usr/lib/pkgconfig" | tr "\n" ':')"
+/usr/lib/pkgconfig" | tr "\n" ':' | sed 's/:$//')"
 
   inc_path="$(find -L /Applications/Xcode.app/Contents/Developer \
     /Library/Developer/CommandLineTools -regex '.*/SDKs/MacOSX[^/]*\.sdk/usr/include' \

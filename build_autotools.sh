@@ -38,7 +38,9 @@ while [[ $# -gt 0 ]]; do
   shift
 done
 
+[[ ":$PATH:" == *":$_PREFIX/bin:"* ]] || export PATH="$_PREFIX/bin:$PATH"
+
 "$_SC_DIR/__build_pkgconfig.sh" "$_PREFIX" "$_SCRATCH_DIR" '' "$_NO_TESTS" "$_BREW_PC"
-"$_SC_DIR/__build_libtool.sh" "$_PREFIX" "$_SCRATCH_DIR" "$_LIBTOOL" "$_NO_TESTS"
 "$_SC_DIR/__build_autoconf.sh" "$_PREFIX" "$_SCRATCH_DIR" "$_AUTOCONF" "$_NO_TESTS"
 "$_SC_DIR/__build_automake.sh" "$_PREFIX" "$_SCRATCH_DIR" "$_AUTOMAKE" "$_NO_TESTS"
+"$_SC_DIR/__build_libtool.sh" "$_PREFIX" "$_SCRATCH_DIR" "$_LIBTOOL" "$_NO_TESTS"

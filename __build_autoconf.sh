@@ -20,7 +20,7 @@ then
 
   ./configure "--prefix=$_PREFIX" "--with-lispdir=$_PREFIX/share/emacs/site-lisp/autoconf"
   make -j2 V=1 install
-  [[ "$_NO_TESTS" != 0 ]] || make check
+  [[ "$_NO_TESTS" != 0 ]] || make check || true
 
   rm -f "$_PREFIX/share/info/standards.info"
 fi

@@ -19,7 +19,7 @@ then
     --program-prefix=g "CFLAGS=${CFLAGS:+$CFLAGS }-O2"
 
   make -j2 V=1 install
-  [[ "$_NO_TESTS" != 0 ]] || make check
+  [[ "$_NO_TESTS" != 0 ]] || make check || true
 
   mkdir -p "$_PREFIX/libexec"/{gnubin,gnuman/man1}
   for prog in libtool libtoolize; do
