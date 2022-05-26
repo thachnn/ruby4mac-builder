@@ -26,5 +26,5 @@ then
     ln -s "../../bin/g$prog" "$_PREFIX/libexec/gnubin/$prog"
     ln -s "../../../share/man/man1/g$prog.1" "$_PREFIX/libexec/gnuman/man1/$prog.1"
   done
-  ln -s gnuman "$_PREFIX/libexec/man"
+  ln -sfh gnuman "$_PREFIX/libexec/man"
 fi

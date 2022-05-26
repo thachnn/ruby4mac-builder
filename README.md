@@ -14,6 +14,9 @@ export CXX=clang++
 export SDKROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk
 ```
 
+- Create directory `/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/AppleInternal`
+  to build Ruby for `universal` architecture without `ld` deprecated warning
+
 ## Usage
 
 ```bash

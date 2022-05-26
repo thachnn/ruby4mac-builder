@@ -55,7 +55,7 @@ $(grep -e ' BN_LLONG\| SIXTY_FOUR_BIT\| THIRTY_TWO_BIT' \
       lipo -create "$_PREFIX/tmp$f" "$f" -output "$f"
     done
 
-    diff -u "$_PREFIX/include/openssl" "$_PREFIX/tmp$_PREFIX/include/openssl" || true
+    diff -u "$_PREFIX/tmp$_PREFIX/include/openssl" "$_PREFIX/include/openssl" || true
     rm -rf "$_PREFIX/tmp"
   fi
 
