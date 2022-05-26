@@ -66,3 +66,12 @@ rm -fv /opt/local/lib/*.la
 ./build.sh --version=2.4.10 --prefix=/Library/Frameworks/Ruby.framework/Versions/2.4 \
   --scratch-path=/usr/local/src --without-openssl --without-readline --with-gdbm=1.18.1 --unit-test
 ```
+
+## AutoTools for macOS
+
+This project also contains `autotools` for macOS builder (`pkg-config`, `m4`, `autoconf`, `automake`, `libtool`)
+
+```bash
+./build_autotools.sh --prefix=/opt/local --scratch-path=/usr/local/src --with-m4=1 \
+  --with-autoconf=2.71 --with-automake=1.16.5 --with-libtool=2.4.7 --unit-test --with-brew-pc
+```
