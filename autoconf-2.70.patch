@@ -1,0 +1,55 @@
+diff --git a/bin/autom4te.in b/bin/autom4te.in
+index febcdee..9b153e9 100644
+--- a/bin/autom4te.in	2020-12-07 14:03:56.000Z
++++ b/bin/autom4te.in	2020-12-07 14:03:56.000Z
+@@ -852,6 +852,9 @@ EOF
+       # Traces without arguments, always on a single line.
+       s{^m4trace:(.+):(\d+): -(\d+)- ([^)]*)\n$}
+        {AT_$4([$1], [$2], [$3], [$4])\n};
++      # Traces for trailer finalize.
++      s{^m4trace: -(\d+)- ([^(]+)\((.*)$}
++       {AT_$2([./lib/autoconf/trailer.m4], [4], [$1], [$2], $3};
+       print $trace_m4 "$_";
+     }
+   $trace_m4->close;
+diff --git a/tests/mktests.pl b/tests/mktests.pl
+index 6392089..cd456bb 100644
+--- a/tests/mktests.pl
++++ b/tests/mktests.pl
+@@ -194,10 +194,12 @@ my %test_parameters = (
+   # standard, so it may or may not be present depending on how much
+   # the C++ compiler cares about C source compatibility.
+   AC_CHECK_HEADER_STDBOOL => {
++    pretest_commands => '[export CXXFLAGS="$CXXFLAGS -std=gnu++11"]',
+     test_parameters => ('[cxx_define_varies:HAVE__BOOL' .
+                         ' cxx_cv_varies:type__Bool]')
+   },
+   AC_HEADER_STDBOOL => {
++    pretest_commands => '[export CXXFLAGS="$CXXFLAGS -std=gnu++11"]',
+     test_parameters => ('[cxx_define_varies:HAVE__BOOL' .
+                         ' cxx_cv_varies:type__Bool]')
+   },
+@@ -237,7 +239,10 @@ sub emit_test
+   my $additional_commands = ${$params}{additional_commands} || '';
+   my $autoconf_flags      = ${$params}{autoconf_flags}      || '';
+   my $test_parameters     = ${$params}{test_parameters}     || '';
++  my $pretest_commands    = ${$params}{pretest_commands}    || '';
+ 
++  $test_parameters = '[]'
++    if $test_parameters eq '' && $pretest_commands ne '';
+   $autoconf_flags = '[]'
+     if $autoconf_flags eq '' && $test_parameters ne '';
+   $additional_commands = '[]'
+@@ -246,10 +251,11 @@ sub emit_test
+     if $macro_use eq '' && $additional_commands ne '';
+ 
+   print $fh "$test_macro([$macro]";
+-  print $fh ", $autoconf_flags" if $autoconf_flags ne '';
++  print $fh ", $macro_use" if $macro_use ne '';
+   print $fh ", $additional_commands" if $additional_commands ne '';
+   print $fh ", $autoconf_flags" if $autoconf_flags ne '';
+   print $fh ", $test_parameters" if $test_parameters ne '';
++  print $fh ", $pretest_commands" if $pretest_commands ne '';
+   print $fh ")\n";
+ }
+ 

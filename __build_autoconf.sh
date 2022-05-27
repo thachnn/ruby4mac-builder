@@ -1,5 +1,6 @@
 #!/bin/bash
 set -xe
+_SC_DIR="$(cd "`dirname "$0"`"; pwd)"
 
 _VER="${3:-2.71}"
 _PKG="autoconf-$_VER"
@@ -15,6 +16,8 @@ then
   tar -xf "$_PKG.tar.gz"
 
   cd "$_PKG"
+  # Apply patches
+  [[ ! -s "$_SC_DIR/$_PKG.patch" ]] || patch -p1 -T -i "$_SC_DIR/$_PKG.patch"
   # Force autoreconf to look for and use our glibtoolize
   sed -i '' 's/libtoolize/glibtoolize/g' bin/autoreconf.in man/autoreconf.1
 
