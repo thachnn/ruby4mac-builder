@@ -17,9 +17,13 @@ then
   cd "$_PKG"
   ./configure --disable-dependency-tracking "--prefix=$_PREFIX" --enable-ltdl-install \
     --program-prefix=g "CFLAGS=${CFLAGS:+$CFLAGS }-O2"
-
   make -j2 V=1 install
-  [[ "$_NO_TESTS" != 0 ]] || make check || true
+
+  if [[ "$_NO_TESTS" == 0 ]]; then
+    # Patch DYLD_LIBRARY_PATH SIP for execution mode
+    sed -i- 's| if \$LIBTOOL --mode=execute -dlopen m/| cp -af m/. l/ ;&|' tests/testsuite
+    make check || true
+  fi
 
   mkdir -p "$_PREFIX/libexec"/{gnubin,gnuman/man1}
   for prog in libtool libtoolize; do
