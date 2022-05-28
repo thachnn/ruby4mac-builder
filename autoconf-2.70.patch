@@ -12,6 +12,47 @@ index febcdee..9b153e9 100644
        print $trace_m4 "$_";
      }
    $trace_m4->close;
+diff --git a/tests/compile.at b/tests/compile.at
+index 4847f11..e04f8c5 100644
+--- a/tests/compile.at
++++ b/tests/compile.at
+@@ -335,10 +335,10 @@ AC_OUTPUT
+ ]])
+ 
+ AT_CHECK_AUTOCONF([], 0, [],
+-[[configure.ac:14: warning: The macro `AC_TRY_RUN' is obsolete.
+-configure.ac:14: You should run autoupdate.
++[[configure.ac:18: warning: The macro `AC_TRY_RUN' is obsolete.
++configure.ac:18: You should run autoupdate.
+ general.m4: AC_TRY_RUN is expanded from...
+-configure.ac:14: the top level
++configure.ac:18: the top level
+ ]])
+ AT_CHECK_CONFIGURE([-q])
+ 
+diff --git a/tests/m4sh.at b/tests/m4sh.at
+index 98e612a..6756e62 100644
+--- a/tests/m4sh.at
++++ b/tests/m4sh.at
+@@ -622,12 +622,12 @@ script.as:23: warning: $as@&t@_echo is obsolete; use AS@&t@_ECHO(["message"]) in
+ script.as:23: warning: $as@&t@_echo_n is obsolete; use AS@&t@_ECHO_N(["message"]) instead
+ script.as:24: warning: $as@&t@_echo is obsolete; use AS@&t@_ECHO(["message"]) instead
+ script.as:24: warning: $as@&t@_echo_n is obsolete; use AS@&t@_ECHO_N(["message"]) instead
+-script.as:25: warning: $as@&t@_echo is obsolete; use AS@&t@_ECHO(["message"]) instead
+-script.as:25: warning: $as@&t@_echo_n is obsolete; use AS@&t@_ECHO_N(["message"]) instead
+-script.as:28: warning: $as@&t@_echo is obsolete; use AS@&t@_ECHO(["message"]) instead
+-script.as:28: warning: $as@&t@_echo_n is obsolete; use AS@&t@_ECHO_N(["message"]) instead
+-script.as:30: warning: $as@&t@_echo is obsolete; use AS@&t@_ECHO(["message"]) instead
+-script.as:30: warning: $as@&t@_echo_n is obsolete; use AS@&t@_ECHO_N(["message"]) instead
++script.as:27: warning: $as@&t@_echo is obsolete; use AS@&t@_ECHO(["message"]) instead
++script.as:27: warning: $as@&t@_echo_n is obsolete; use AS@&t@_ECHO_N(["message"]) instead
++script.as:29: warning: $as@&t@_echo is obsolete; use AS@&t@_ECHO(["message"]) instead
++script.as:29: warning: $as@&t@_echo_n is obsolete; use AS@&t@_ECHO_N(["message"]) instead
++script.as:31: warning: $as@&t@_echo is obsolete; use AS@&t@_ECHO(["message"]) instead
++script.as:31: warning: $as@&t@_echo_n is obsolete; use AS@&t@_ECHO_N(["message"]) instead
+ ]])
+ AT_CHECK([$CONFIG_SHELL ./script])
+ 
 diff --git a/tests/mktests.pl b/tests/mktests.pl
 index 6392089..cd456bb 100644
 --- a/tests/mktests.pl
@@ -52,4 +93,194 @@ index 6392089..cd456bb 100644
 +  print $fh ", $pretest_commands" if $pretest_commands ne '';
    print $fh ")\n";
  }
+ 
+diff --git a/tests/semantics.at b/tests/semantics.at
+index ac7fe01..2702249 100644
+--- a/tests/semantics.at
++++ b/tests/semantics.at
+@@ -299,9 +299,9 @@ autoconf_nepof])
+ AS@&t@_UNSET([funcs])]])
+ 
+ AT_CHECK_AUTOCONF([], [], [],
+-[[configure.ac:9: warning: AC_REPLACE_FUNCS($funcs): you should use literals
++[[configure.ac:12: warning: AC_REPLACE_FUNCS($funcs): you should use literals
+ functions.m4: AC_REPLACE_FUNCS is expanded from...
+-configure.ac:9: the top level
++configure.ac:12: the top level
+ ]])
+ AT_CHECK_AUTOHEADER([], [
+   HAVE_AUTOCONF_FTNIRP
+@@ -1019,11 +1019,11 @@ $1([dn@&t@l
+ ])
+ ]])
+ AT_CHECK_AUTOCONF([], [0], [],
+-[configure.ac:6: warning: whitespace-separated list contains macros;
+-configure.ac:6: in a future version of Autoconf they will not be expanded
+-configure.ac:6: note: `dn@&t@l' is a macro
++[configure.ac:11: warning: whitespace-separated list contains macros;
++configure.ac:11: in a future version of Autoconf they will not be expanded
++configure.ac:11: note: `dn@&t@l' is a macro
+ functions.m4: $1 is expanded from...
+-configure.ac:6: the top level
++configure.ac:11: the top level
+ ])
+ AT_CHECK_AUTOHEADER([-W no-obsolete], [
+   HAVE_FN_BLURF
+@@ -1048,14 +1048,14 @@ $1([dn@&t@l
+ ])
+ ]])
+ AT_CHECK_AUTOCONF([], [0], [],
+-[configure.ac:8: warning: whitespace-separated list contains macros;
+-configure.ac:8: in a future version of Autoconf they will not be expanded
+-configure.ac:8: note: `dn@&t@l' is a macro
++[configure.ac:12: warning: whitespace-separated list contains macros;
++configure.ac:12: in a future version of Autoconf they will not be expanded
++configure.ac:12: note: `dn@&t@l' is a macro
+ functions.m4: $1 is expanded from...
+-configure.ac:8: the top level
+-configure.ac:8: warning: $1($fns): you should use literals
++configure.ac:12: the top level
++configure.ac:12: warning: $1($fns): you should use literals
+ functions.m4: $1 is expanded from...
+-configure.ac:8: the top level
++configure.ac:12: the top level
+ ])
+ AT_CHECK_AUTOHEADER([-W no-obsolete], [
+   HAVE_FN_BLURF
+@@ -1080,11 +1080,11 @@ $1([dn@&t@l
+ ])
+ ]])
+ AT_CHECK_AUTOCONF([], [0], [],
+-[configure.ac:6: warning: whitespace-separated list contains macros;
+-configure.ac:6: in a future version of Autoconf they will not be expanded
+-configure.ac:6: note: `dn@&t@l' is a macro
++[configure.ac:11: warning: whitespace-separated list contains macros;
++configure.ac:11: in a future version of Autoconf they will not be expanded
++configure.ac:11: note: `dn@&t@l' is a macro
+ headers.m4: $1 is expanded from...
+-configure.ac:6: the top level
++configure.ac:11: the top level
+ ])
+ AT_CHECK_AUTOHEADER([-W no-obsolete], [
+   HAVE_BLURF_H
+@@ -1119,14 +1119,14 @@ $1([dn@&t@l
+ ])
+ ]])
+ AT_CHECK_AUTOCONF([], [0], [],
+-[configure.ac:8: warning: whitespace-separated list contains macros;
+-configure.ac:8: in a future version of Autoconf they will not be expanded
+-configure.ac:8: note: `dn@&t@l' is a macro
++[configure.ac:12: warning: whitespace-separated list contains macros;
++configure.ac:12: in a future version of Autoconf they will not be expanded
++configure.ac:12: note: `dn@&t@l' is a macro
+ headers.m4: $1 is expanded from...
+-configure.ac:8: the top level
+-configure.ac:8: warning: $1($hs): you should use literals
++configure.ac:12: the top level
++configure.ac:12: warning: $1($hs): you should use literals
+ headers.m4: $1 is expanded from...
+-configure.ac:8: the top level
++configure.ac:12: the top level
+ ])
+ AT_CHECK_AUTOHEADER([-W no-obsolete], [
+   HAVE_BLURF_H
+@@ -1166,11 +1166,11 @@ AC_CHECK_FILES([dn@&t@l
+ ])
+ ]])
+ AT_CHECK_AUTOCONF([], [0], [],
+-[configure.ac:6: warning: whitespace-separated list contains macros;
+-configure.ac:6: in a future version of Autoconf they will not be expanded
+-configure.ac:6: note: `dn@&t@l' is a macro
++[configure.ac:10: warning: whitespace-separated list contains macros;
++configure.ac:10: in a future version of Autoconf they will not be expanded
++configure.ac:10: note: `dn@&t@l' is a macro
+ general.m4: AC_CHECK_FILES is expanded from...
+-configure.ac:6: the top level
++configure.ac:10: the top level
+ ])
+ AT_CHECK_AUTOHEADER([-W no-obsolete], [
+   HAVE__NONEX_F_BLURF
+@@ -1192,15 +1192,15 @@ AC_CONFIG_MACRO_DIRS([dn@&t@l
+ ])
+ ]])
+ AT_CHECK_AUTOCONF([-t AC_CONFIG_MACRO_DIR_TRACE], [0],
+-[configure.ac:6:AC_CONFIG_MACRO_DIR_TRACE:d_foo
+-configure.ac:6:AC_CONFIG_MACRO_DIR_TRACE:d_quux
+-configure.ac:6:AC_CONFIG_MACRO_DIR_TRACE:d_blurf
++[configure.ac:10:AC_CONFIG_MACRO_DIR_TRACE:d_foo
++configure.ac:10:AC_CONFIG_MACRO_DIR_TRACE:d_quux
++configure.ac:10:AC_CONFIG_MACRO_DIR_TRACE:d_blurf
+ ],
+-[configure.ac:6: warning: whitespace-separated list contains macros;
+-configure.ac:6: in a future version of Autoconf they will not be expanded
+-configure.ac:6: note: `dn@&t@l' is a macro
++[configure.ac:10: warning: whitespace-separated list contains macros;
++configure.ac:10: in a future version of Autoconf they will not be expanded
++configure.ac:10: note: `dn@&t@l' is a macro
+ general.m4: AC_CONFIG_MACRO_DIRS is expanded from...
+-configure.ac:6: the top level
++configure.ac:10: the top level
+ ])
+ 
+ AT_CLEANUP
+@@ -1224,11 +1224,11 @@ AC_CONFIG_SUBDIRS([dn@&t@l
+ ])
+ ]])
+ AT_CHECK_AUTOCONF([], [0], [],
+-[configure.ac:6: warning: whitespace-separated list contains macros;
+-configure.ac:6: in a future version of Autoconf they will not be expanded
+-configure.ac:6: note: `dn@&t@l' is a macro
++[configure.ac:10: warning: whitespace-separated list contains macros;
++configure.ac:10: in a future version of Autoconf they will not be expanded
++configure.ac:10: note: `dn@&t@l' is a macro
+ status.m4: AC_CONFIG_SUBDIRS is expanded from...
+-configure.ac:6: the top level
++configure.ac:10: the top level
+ ])
+ AT_CHECK_AUTOHEADER([-W no-obsolete])
+ AT_CHECK_CONFIGURE([], [0], [stdout])
+diff --git a/tests/tools.at b/tests/tools.at
+index d32ad36..10c50f4 100644
+--- a/tests/tools.at
++++ b/tests/tools.at
+@@ -379,9 +379,9 @@ AT_CHECK_AUTOCONF([-t AC_CONFIG_MACRO_DIR], 0,
+ # Preferred tracing
+ AT_CHECK_AUTOCONF([-t AC_CONFIG_MACRO_DIR_TRACE], 0,
+ [[configure.ac:2:AC_CONFIG_MACRO_DIR_TRACE:dir1
+-configure.ac:3:AC_CONFIG_MACRO_DIR_TRACE:dir2
+-configure.ac:3:AC_CONFIG_MACRO_DIR_TRACE:dir3
+-configure.ac:3:AC_CONFIG_MACRO_DIR_TRACE:dir4
++configure.ac:4:AC_CONFIG_MACRO_DIR_TRACE:dir2
++configure.ac:4:AC_CONFIG_MACRO_DIR_TRACE:dir3
++configure.ac:4:AC_CONFIG_MACRO_DIR_TRACE:dir4
+ configure.ac:5:AC_CONFIG_MACRO_DIR_TRACE:dir5
+ ]])
+ 
+@@ -1316,12 +1316,12 @@ AC_OUTPUT
+ AT_CHECK_AUTOCONF([-Werror], 1, [],
+ [[configure.ac:2: warning: OLD is obsolete; convert to NEW
+ general.m4: AC_OBSOLETE is expanded from...
+-aclocal.m4:1: OLD is expanded from...
++aclocal.m4:3: OLD is expanded from...
+ configure.ac:2: the top level
+ configure.ac:2: warning: The macro `AC_OBSOLETE' is obsolete.
+ configure.ac:2: You should run autoupdate.
+ general.m4: AC_OBSOLETE is expanded from...
+-aclocal.m4:1: OLD is expanded from...
++aclocal.m4:3: OLD is expanded from...
+ configure.ac:2: the top level
+ ]])
+ 
+@@ -1342,10 +1342,10 @@ AT_CHECK([[grep 'AC_OBSOLETE(' aclocal.m4]], 1, [ignore], [ignore])
+ 
+ AT_CHECK_AUTOCONF([-Wobsolete -Wno-error], 0, [],
+ [[configure.ac:2: warning: if possible, define this macro using AU_DEFUN.
+-aclocal.m4:1: OLD is expanded from...
++aclocal.m4:5: OLD is expanded from...
+ configure.ac:2: the top level
+ configure.ac:2: warning: OLD is obsolete; convert to NEW
+-aclocal.m4:1: OLD is expanded from...
++aclocal.m4:5: OLD is expanded from...
+ configure.ac:2: the top level
+ ]])
  
