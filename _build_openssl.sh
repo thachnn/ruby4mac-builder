@@ -20,7 +20,7 @@ then
   tar -xf "$_PKG.tar.gz"
 
   cd "$_PKG"
-  # Fix CommonRandom.h error on old macOS
+  # Fix CommonRandom.h error on CLT 9.x
   sed -i '' $'s|^\\(# *include <CommonCrypto/Common\\)Random.h>|\\1CryptoError.h>\\\n&|' \
     crypto/rand/rand_unix.c
 

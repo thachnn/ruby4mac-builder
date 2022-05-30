@@ -16,7 +16,7 @@ then
 
   cd "$_PKG"
   # Patch tests
-  [[ "$USER" == root ]] || mv checks/198.sysval checks/198-sysval
+  [[ "$USER" == root ]] || mv -f checks/198.sysval checks/198-sysval
 
   ./configure --disable-dependency-tracking "--prefix=$_PREFIX" \
     "CFLAGS=${CFLAGS:+$CFLAGS }-O2"
